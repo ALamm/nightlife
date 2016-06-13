@@ -5,7 +5,6 @@ block head
 
 block neck
   link(rel='stylesheet', href='/views/index.min.css?#{cacheBreaker}')
-  script(src='https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js')
 
   script.
     $(document).ready(function(){
@@ -21,39 +20,41 @@ block neck
       })  
       
       // store the user's search into local storage
-      var city = localStorage.getItem("city");
-      console.log ('city variable in localStorage', city);
+      var cityLocal = localStorage.getItem("city");
+      console.log ('city variable in localStorage', cityLocal);
       
       // if there is data in the local storage then that means they are coming back to this page after logging in or signing in.
       //  therefore automatically submit the form with the city automatically populated.
-      if (city) {
+      if (cityLocal) {
         $(function(){
           localStorage.clear();
           console.log ('city variable in localStorage after clearing: ', localStorage.getItem("city"));
-          $("input[name=city]").val(city);
+          $("input[name=city]").val(cityLocal);
           $("form[name=search]").submit();
         });
       }
       
       // IF user clicks LOGIN or SIGNUP, record the current city they have already searched for (if applicable)
-      $("li[name=signup]").click(function(){
-        if (data) {
+      if ('#{city}') {
+        $("li[name=signup]").click(function(){
           localStorage.setItem("city", '#{city}');
-        }
-        return true;
-      });
-      $("li[name=login]").click(function(){
-        if (data) {
+          return true;
+        });
+        $("li[name=login]").click(function(){
           localStorage.setItem("city", '#{city}');
-        }
-        return true;
-      });
-      $("a[name=signup]").click(function(){
-        if (data) {
+          return true;
+        });
+        $("a.btn.btn-primary.btn-lg").click(function(){
           localStorage.setItem("city", '#{city}');
-        }
-        return true;
-      });      
+          return true;
+        }); 
+      }
+      // $("a.btn.btn-primary.btn-lg").click(function(){
+      //   if (data) {
+      //     localStorage.setItem("city", '#{city}');
+      //   }
+      //   return true;
+      // });      
         
       // if user clicks on 'going' button, then get the div id and run an ajax query to update the number
       $('.venuegoing').click(function () {
