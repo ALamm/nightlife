@@ -36,6 +36,7 @@ block neck
       
       // IF user clicks LOGIN or SIGNUP, record the current city they have already searched for (if applicable)
       if ('#{city}') {
+      
         $("li[name=signup]").click(function(){
           localStorage.setItem("city", '#{city}');
           return true;
@@ -49,13 +50,7 @@ block neck
           return true;
         }); 
       }
-      // $("a.btn.btn-primary.btn-lg").click(function(){
-      //   if (data) {
-      //     localStorage.setItem("city", '#{city}');
-      //   }
-      //   return true;
-      // });      
-        
+
       // if user clicks on 'going' button, then get the div id and run an ajax query to update the number
       $('.venuegoing').click(function () {
        
@@ -117,7 +112,7 @@ block body
     p.lead Where are you going tonight?
     if !user.username  
       div
-        a.btn.btn-primary.btn-lg(href='/signup/', name='signup') Create an Account
+        a.btn.btn-primary.btn-lg.createAccount(href='/signup/', name='signup') Create an Account
     div.clearfix
   div.row
     div.col-sm-8
