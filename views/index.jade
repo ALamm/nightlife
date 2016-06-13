@@ -48,6 +48,12 @@ block neck
         }
         return true;
       });
+      $("a[name=signup]").click(function(){
+        if (data) {
+          localStorage.setItem("city", '#{city}');
+        }
+        return true;
+      });      
         
       // if user clicks on 'going' button, then get the div id and run an ajax query to update the number
       $('.venuegoing').click(function () {
@@ -110,7 +116,7 @@ block body
     p.lead Where are you going tonight?
     if !user.username  
       div
-        a.btn.btn-primary.btn-lg(href='/signup/') Create an Account
+        a.btn.btn-primary.btn-lg(href='/signup/', name='signup') Create an Account
     div.clearfix
   div.row
     div.col-sm-8
