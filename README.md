@@ -5,14 +5,18 @@
 2. As an authenticated user, I can add myself to a bar to indicate I am going there tonight.
 3. As an authenticated user, I can remove myself from a bar if I no longer want to go there.
 4. As an unauthenticated user, when I login I should not have to search again.
+5. ADDED - hover over 'the number of users going' and get a tooltip showing 'who is going'
 
 ## Technology
 
-Server side, it uses Drywall which is built with the [Express](http://expressjs.com/)
+Server side, I used Drywall which is built with the [Express](http://expressjs.com/)
 framework. 
+
 Using [MongoDB](http://www.mongodb.org/) as a data store.
 
-We're using [Grunt](http://gruntjs.com/) for the asset pipeline.
+Using Jade/Pug - Node template engine for the View
+
+Using [Grunt](http://gruntjs.com/) for the asset pipeline.
 
 | On The Server | On The Client  | Development |
 | ------------- | -------------- | ----------- |
@@ -28,11 +32,7 @@ We're using [Grunt](http://gruntjs.com/) for the asset pipeline.
 
 | Platform                       
 | ----------------------------------------
-| https://nightlifetonigh.herokuapp.com/
-
-
-## Running the app
-$ npm start
+| https://nightlifetonight.herokuapp.com/
 
 
 ## Features
