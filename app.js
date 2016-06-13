@@ -28,6 +28,7 @@ app.db = mongoose.createConnection(config.mongodb.uri);
 app.db.on('error', console.error.bind(console, 'mongoose connection error: '));
 app.db.once('open', function () {
   //and... we have a data store
+  console.log("*** connected to database ***");
 });
 
 //config data models
@@ -60,7 +61,10 @@ helmet(app);
 
 //response locals
 app.use(function(req, res, next) {
-  res.cookie('_csrfToken', req.csrfToken());
+  // res.cookie('_csrfToken', req.csrfToken());
+  var token = req.csrfToken();    //added the following three lines to reference the 'csrfToken' from form
+  res.cookie('_csrfToken', token);
+  res.locals.csrfToken = token;  
   res.locals.user = {};
   res.locals.user.defaultReturnUrl = req.user && req.user.defaultReturnUrl();
   res.locals.user.username = req.user && req.user.username;

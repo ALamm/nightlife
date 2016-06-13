@@ -1,37 +1,166 @@
 extends ../layouts/default
 
 block head
-  title Drywall is Running
+  title Nightlife
 
 block neck
   link(rel='stylesheet', href='/views/index.min.css?#{cacheBreaker}')
+  script(src='https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js')
+
+  script.
+    $(document).ready(function(){
+    
+      // populate the "qtip tooltip"  - jquery plugin for adding tooltip -  with users who are going
+      $('[data-tooltip!=""]').qtip({ // Grab all elements with a non-blank data-tooltip attr.
+          content: {
+              attr: 'data-tooltip' // Tell qTip2 to look inside this attr for its content
+          },
+          style: {
+              classes: 'qtip-light qtip-bootstrap'
+          }
+      })  
+      
+      // store the user's search into local storage
+      var city = localStorage.getItem("city");
+      console.log ('city variable in localStorage', city);
+      
+      // if there is data in the local storage then that means they are coming back to this page after logging in or signing in.
+      //  therefore automatically submit the form with the city automatically populated.
+      if (city) {
+        $(function(){
+          localStorage.clear();
+          console.log ('city variable in localStorage after clearing: ', localStorage.getItem("city"));
+          $("input[name=city]").val(city);
+          $("form[name=search]").submit();
+        });
+      }
+      
+      // IF user clicks LOGIN or SIGNUP, record the current city they have already searched for (if applicable)
+      $("li[name=signup]").click(function(){
+        if (data) {
+          localStorage.setItem("city", '#{city}');
+        }
+        return true;
+      });
+      $("li[name=login]").click(function(){
+        if (data) {
+          localStorage.setItem("city", '#{city}');
+        }
+        return true;
+      });
+        
+      // if user clicks on 'going' button, then get the div id and run an ajax query to update the number
+      $('.venuegoing').click(function () {
+       
+        var divId = "h1#" + $(this).attr('id');  // get the id of the button (which is the same as the parent div)
+
+        var data = JSON.stringify({ 
+                 'id': $(this).attr('id'),
+                 'city':'#{city}'
+               });
+        
+        $.ajax({
+            url: '/going/',
+            type: 'POST',
+            dataType: 'json',
+            data: data,
+            success: function (result) {
+              // this AJAX call will always return 'success' but with different status codes (e.g. 200/500)
+              console.log(result);
+              if(result.status == 200){
+                // User is logged in.  Change the number up and down as appropriate
+                var numberGoing = result.number;
+                var goingList = result.list;
+                if (goingList === '') {
+                  goingList = 'Nobody Yet!';
+                }
+                else {
+                  goingList = goingList.split(',').join('</br>')  
+                }
+                $(divId).text(numberGoing);
+                $( divId).attr('data-tooltip', goingList);
+                $('[data-tooltip!=""]').qtip({ // Grab all elements with a non-blank data-tooltip attr.
+                    content: {
+                        attr: 'data-tooltip' // Tell qTip2 to look inside this attr for its content
+                    },
+                        style: {
+                            classes: 'qtip-light qtip-bootstrap'
+                    }
+                }); 
+              }
+              if(result.status == 500) {
+                // User is NOT LOGGED IN.
+                // Remember the city they have searched for by setting it into local storage
+                localStorage.setItem("city", '#{city}'); 
+                console.log("error: not logged in. Set localStorage", localStorage.getItem("city"));
+                window.location.replace('/signup/');
+              }                
+            },
+            error: function(result){
+                console.log("the ajax call had an error");
+                console.log(result);
+            }
+        });
+      });
+    });
 
 block body
   div.jumbotron
-    h1 Success
-    p.lead
-      | Your Node.js website and user system is running. May the force be with you.
-    div
-      a.btn.btn-primary.btn-lg(href='/signup/') Create an Account
-      | &nbsp;or&nbsp;
-      a.btn.btn-warning.btn-lg(href='/login/forgot/') Reset Your Password
+    h1.leadTitle Nightlife Tonight
+    p.lead Where are you going tonight?
+    if !user.username  
+      div
+        a.btn.btn-primary.btn-lg(href='/signup/') Create an Account
     div.clearfix
   div.row
-    div.col-sm-4
-      div.panel.panel-default
-        div.panel-body
-          h3 About Us
-          p At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti.
-          a.btn.btn-default.btn-block(href='/about/') Learn More
-    div.col-sm-4
-      div.panel.panel-default
-        div.panel-body
-          h3 Sign Up
-          p At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti.
-          a.btn.btn-default.btn-block(href='/signup/') Learn More
-    div.col-sm-4
-      div.panel.panel-default
-        div.panel-body
-          h3 Contact Us
-          p At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti.
-          a.btn.btn-default.btn-block(href='/contact/') Learn More
+    div.col-sm-8
+      form.input-append(action='/search/', method='post', name="search")
+        input(type='hidden' name="_csrf" value="#{csrfToken}")  
+        div.input-group.searchbox
+          // NOTE: the name field is required with Express !!
+          input.form-control(type='text', placeholder='Example:  San Francisco, CA', name="city" value='#{city}')
+          span.input-group-btn
+            input(type='submit',class='btn btn-primary', value='Go', data-transition='fade', data-theme='c')
+    div-col-sm-2
+
+  // if search has been activated        
+  if data
+    - for (var i = 0; i < data.length; ++i) {  
+      div.row
+        div.col-sm-8
+          div.panel.panel-default.venuelist
+            a(href=data[i][3], target='_blank')
+              div.panel-body
+                div.venueleft
+                  img.venueimage(src=data[i][1])
+                div.venuerdescription
+                  h3.description= data[i][0]
+                  p=data[i][2] 
+        div.col-sm-1
+          // form.input-append(action='', method='post', name="going")
+          //   input(type='hidden' name="_csrf" value="#{csrfToken}")
+          div.panel.panel-default.venuegoing(id=data[i][4])
+            div.panel-body
+              p.going Going?
+              // check if docs array exists (e.g. is anyone going ("docs" from DB) to any of the bars returned by Yelp Search ("data"))
+              if docs                     
+                - var flag = false;
+                - for (var y = 0; y < docs.length; ++y) {  
+                    // check if the bar 'id' in the DB (docs) matches this row's bar id ('data' - from yelp search)
+                    if docs[y].id === data[i][4]      
+                      -var goingList = docs[y].attendees.join("</br>")
+                      // set the id and 'data-tooltip' element values 
+                      h1.numbergoing(id=data[i][4], data-tooltip=(goingList))=docs[y].attendees.length   
+                      - flag = true;
+                - }
+                  // no match in docs found for this row's bar id
+                  if flag === false 
+                    h1.numbergoing(id=data[i][4]) 0
+              else
+                h1.numbergoing 0
+        div.col-sm-3
+    - }
+   
+
+
+

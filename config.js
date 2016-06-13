@@ -1,19 +1,32 @@
 'use strict';
 
-exports.port = process.env.PORT || 3000;
+//initialize .env global variables
+require('dotenv').config();
+
+exports.port = process.env.PORT || 8080;
 exports.mongodb = {
-  uri: process.env.MONGOLAB_URI || process.env.MONGOHQ_URL || 'mongodb://localhost:27017/drywall'
+  uri: process.env.MONGOLAB_URI || 'mongodb://localhost:27017'
 };
-exports.companyName = 'Acme, Inc.';
-exports.projectName = 'Drywall';
-exports.systemEmail = 'your@email.addy';
+
+exports.yelp = {
+  consumer_key: process.env.CONSUMER_KEY,
+  consumer_secret: process.env.CONSUMER_SECRET,
+  token: process.env.TOKEN,
+  token_secret: process.env.TOKEN_SECRET
+};
+
+exports.companyName = 'Nightlife';
+exports.projectName = 'Nightlife';
+exports.systemEmail = 'votetime99@gmail.com';
 exports.cryptoKey = 'k3yb0ardc4t';
 exports.loginAttempts = {
   forIp: 50,
   forIpAndUser: 7,
   logExpiration: '20m'
 };
+
 exports.requireAccountVerification = false;
+
 exports.smtp = {
   from: {
     name: process.env.SMTP_FROM_NAME || exports.projectName +' Website',
@@ -23,9 +36,10 @@ exports.smtp = {
     user: process.env.SMTP_USERNAME || 'your@email.addy',
     password: process.env.SMTP_PASSWORD || 'bl4rg!',
     host: process.env.SMTP_HOST || 'smtp.gmail.com',
-    ssl: true
+    tls: true
   }
 };
+
 exports.oauth = {
   twitter: {
     key: process.env.TWITTER_OAUTH_KEY || '',
@@ -36,8 +50,8 @@ exports.oauth = {
     secret: process.env.FACEBOOK_OAUTH_SECRET || ''
   },
   github: {
-    key: process.env.GITHUB_OAUTH_KEY || '',
-    secret: process.env.GITHUB_OAUTH_SECRET || ''
+    key: process.env.GITHUB_KEY || '',
+    secret: process.env.GITHUB_SECRET || ''
   },
   google: {
     key: process.env.GOOGLE_OAUTH_KEY || '',

@@ -4,6 +4,7 @@ function ensureAuthenticated(req, res, next) {
   if (req.isAuthenticated()) {
     return next();
   }
+  // if unauthenticated then direct to login page
   res.set('X-Auth-Required', 'true');
   req.session.returnUrl = req.originalUrl;
   res.redirect('/login/');
@@ -29,11 +30,16 @@ function ensureAccount(req, res, next) {
 }
 
 exports = module.exports = function(app, passport) {
+  
   //front end
   app.get('/', require('./views/index').init);
-  app.get('/about/', require('./views/about/index').init);
+
+  // NOTE THE USE OF "ensureAuthenticated" function - created at top of page - only authenticated users permitted
   app.get('/contact/', require('./views/contact/index').init);
   app.post('/contact/', require('./views/contact/index').sendMessage);
+  
+  app.post('/search/', require('./views/index').search);
+  app.post('/going/', require('./views/index').going);
 
   //sign up
   app.get('/signup/', require('./views/signup/index').init);
@@ -141,7 +147,12 @@ exports = module.exports = function(app, passport) {
   //account
   app.all('/account*', ensureAuthenticated);
   app.all('/account*', ensureAccount);
-  app.get('/account/', require('./views/account/index').init);
+  //changed the line below to direct to search page after signup.
+  app.get('/account/', require('./views/index').search); 
+  // the original line was:
+  // app.get('/account/', require('./views/account/settings/index').init);
+  // changed the above line to default to the homepage instead of going to the account settings page after signup
+  // app.get('/account/', require('./views/index').init);  
 
   //account > verification
   app.get('/account/verification/', require('./views/account/verification/index').init);

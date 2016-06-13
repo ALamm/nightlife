@@ -1,23 +1,24 @@
 {
-  "name": "Drywall",
-  "version": "0.18.0",
+  "name": "Nightlife",
+  "version": "0.0.1",
   "private": true,
   "scripts": {
     "start": "grunt"
   },
-  "author": "Reza Akhavan <jedireza@gmail.com> (http://reza.akhavan.me/)",
+  "author": "AlexanderL",
   "license": "MIT",
   "engines": {
     "node": ">=4.0.0"
   },
   "dependencies": {
     "async": "1.x.x",
-    "bcrypt": "0.8.x",
+    "bcryptjs": "*",
     "body-parser": "1.x.x",
     "compression": "1.x.x",
     "connect-mongo": "1.x.x",
     "cookie-parser": "1.x.x",
     "csurf": "1.x.x",
+    "dotenv": "^2.0.0",
     "emailjs": "1.x.x",
     "express": "4.13.x",
     "express-session": "1.x.x",
@@ -26,6 +27,7 @@
     "method-override": "2.x.x",
     "mongoose": "4.x.x",
     "morgan": "1.x.x",
+    "nodemon": "^1.9.2",
     "passport": "0.3.x",
     "passport-facebook": "2.x.x",
     "passport-github": "1.x.x",
@@ -35,7 +37,8 @@
     "passport-tumblr": "0.1.x",
     "passport-twitter": "1.x.x",
     "serve-static": "1.10.x",
-    "underscore": "1.x.x"
+    "underscore": "1.x.x",
+    "yelp": "^1.0.1"
   },
   "devDependencies": {
     "backbone": "1.x.x",

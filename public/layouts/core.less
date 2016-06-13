@@ -17,6 +17,13 @@ table thead th {
   background-color: #ddd;
 }
 
+a, a:hover, a:visited, a:active, a:focus {
+  text-decoration: none;
+  cursor: pointer;
+}
+
+// OTHER ITEMS
+
 select, textarea, input, .form-control {
   font-size: 16px; //ios input zoom prevention hack
 }
@@ -25,10 +32,60 @@ select, textarea, input, .form-control {
   .border-left-radius(0);
 }
 
+.searchbox {
+  width: 100%;
+}
+
+.input-append {
+  margin-bottom: 25px;
+}
+
+.jumbotron {
+  background: #97d2c4!important;
+}
+
+.tooltip {
+    display: inline-block;
+    width: 100px;
+  }
+
+.venuegoing {
+  background: #eee;
+    height: 132px;
+    width: 80px;  
+        cursor: pointer;
+}
+.numbergoing {
+    margin: 17px 0 0 13px;
+}
+
+.venueleft {
+  float: left;
+}
+.venuerdescription {
+    overflow: hidden;
+    padding-left: 4%;
+}
+.venueimage {
+
+}
+.description {
+  margin-top:0px;
+}
+
 .dropdown-header {
   font-weight: bold;
   text-transform: uppercase;
   padding-left: 12px;
+}
+
+.dropdown-menu {
+  text-align: right;
+  min-width: 95px;
+}
+
+.navbar-fixed-top {
+  background:#F0F3F5!important;
 }
 
 .navbar {
@@ -44,12 +101,18 @@ select, textarea, input, .form-control {
       position: absolute;
       top: 10px;
       height: 32px;
-      width: 32px;
+      // width: 32px;
+      // left:-30px;
     }
   }
   .navbar-brand-label {
     margin-left: 35px;
   }
+}
+
+.benefits { 
+  text-align: left;
+  font-size:22px;
 }
 
 .footer {
@@ -98,7 +161,7 @@ select, textarea, input, .form-control {
     height: inherit;
     margin: 0;
   }
-}​
+}
 
 .force-wrap {
   white-space: pre-wrap; /* css-3 */
